@@ -371,7 +371,7 @@ Here, ChatGPT mistakenly interpreted ```no M0 are P``` as ```(circle P, inside, 
 ***(iii) Therefore, ChatGPT (gpt-3.5-turbo) hallucinated a correct decision based on an incorrect explanation.***
 
 
-## An example of Class correct decisioin and gives correct but irrelavent explanation (```HALLU 2```)
+## A case of ```HALLU 2``` (correct decisioin with correct but irrelavent explanations)
 
 LLM may make a correct decisioin and gives correct explanation for each single statement, but the whole explanation is incorrect.
 
