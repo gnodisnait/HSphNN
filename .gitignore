@@ -13,15 +13,7 @@ geckodriver.log
 *.so
 
 # Distribution / packaging
-.Python
-config/
-data/
-venv/
-eggs/
-.eggs/
-*.egg-info/
-.installed.cfg
-*.egg
+.Python  
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
