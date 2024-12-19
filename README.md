@@ -86,7 +86,10 @@ Experiments show that it took HSphNN more time to determine a valid syllogistic 
 
 ![alt text](pic/time4all.png)
 
-# Step 4. to see the results of the second experiment (HSphNN gave feedback to ChatGPT), create a ```config``` directory in the ```HSphNN``` directory, and create the ```openai_key.txt``` file to save your API key of [openai](https://platform.openai.com/docs/quickstart). Then type
+# Step 4. to see the results of the second experiment (HSphNN gave feedback to ChatGPT)
+
+## create a ```config``` directory in the ```HSphNN``` directory, and create the ```openai_key.txt``` file to save your API key of [openai](https://platform.openai.com/docs/quickstart). 
+## Then type
 ```
 $  python eval_exp2.py
 ```
