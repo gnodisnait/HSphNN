@@ -13,15 +13,11 @@ type following command to unzip ```hsphnn_runs.zip``` and move the data director
 ```
 $ unzip hsphnn_runs.zip
 ```
-After that, the directory structure is as follows.
+After that, move the ```hsphnn_runs``` directory under the directory ```data``` as follows.
 ```
 --
  |-/data/hsphnn_runs/
- |-/HSphNN/ 
-      |--/config/
-      |--/data/
-      |--/Syllogism
-      |--/ValidSyllogism
+ |-/HSphNN/  
 ```
 # Step 3. to see the results of the first experiment (HSphNN achieves the symbolic-level of syllogistic reasoning with 1 epoch), type
 
@@ -88,8 +84,17 @@ Experiments show that it took HSphNN more time to determine a valid syllogistic 
 
 # Step 4. to see the results of the second experiment (HSphNN gave feedback to ChatGPT)
 
-## create a ```config``` directory in the ```HSphNN``` directory, and create the ```openai_key.txt``` file to save your API key of [openai](https://platform.openai.com/docs/quickstart). 
-## Then type
+### create a ```config``` directory in the ```HSphNN``` directory, and create the ```openai_key.txt``` file to save your API key of [openai](https://platform.openai.com/docs/quickstart). 
+
+```
+--
+ |-/data/hsphnn_runs/
+ |-/HSphNN/ 
+      |--/config/
+            |--openai_key.txt 
+```
+
+### then, type
 ```
 $  python eval_exp2.py
 ```
