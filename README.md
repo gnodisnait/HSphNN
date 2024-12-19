@@ -7,7 +7,7 @@ Data, Code, and the supplementary document for the paper, *Neural Reasoning for 
 
 ## The supplementary document: 
 
-```supplementary_document.pdf```
+[supplementary_document.pdf](https://github.com/gnodisnait/HSphNN/blob/main/supplementary_document.pdf)
 
 ---
 
