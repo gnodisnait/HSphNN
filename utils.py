@@ -6,7 +6,7 @@
 
 import os
 import numpy as np
-import spacy
+#import spacy
 import itertools
 import random
 from collections import defaultdict
@@ -17,111 +17,6 @@ import math
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from matplotlib.patches import Patch, Circle
-from matplotlib.lines import Line2D
-import matplotlib.font_manager as font_manager
-
-from adjustText import adjust_text
-
-nlp = spacy.load("en_core_web_sm")
-
-
-def create_list_of_sat_cases_exp2(inFile1 = '', inFile2 = '', outFile = ''):
-    '''
-    all three files use absolute file names.
-    :param inFile2: input file of all test cases, each line is a syllogistic reasoning
-    :param inFile1: input file of all valid syllogistic reasoning
-    :param outFile: output a list of file numbers, n, log_text_<n>.txt should project True conclustion
-    :return: the length of the list in outFile
-    '''
-    unsat_formats = []
-    rep_dic = {'all': 'some-not', 'some': 'no', 'some-not': 'all', 'no': 'some'}
-    with open(inFile1, 'r') as ifh:
-        for ln in ifh.readlines():
-            p1, p2, c = ln.strip().split(', ')
-            cRel = c.split()[0]
-            c = c.replace(cRel, rep_dic[cRel])
-            unsat_formats.append(p1 + ', '+ p2 + ': ' +c)
-    test_with_correct_ans = []
-    rep_dic = {'all': 'P', 'some': '-D', 'some-not': '-P', 'no': 'D'}
-    with open(inFile2, 'r') as ifh:
-        for ln in ifh.readlines():
-            ln = ln.strip()
-            S, P = ln.split(':')[-1].split(' ')[2:]
-            M1 = [ele for ele in ln.split(',')[0].split(' ')[1:] if ele != S][0]
-            newln = ln.replace(S, 'S')
-            P = P.replace(S, 'S')
-            M1 = M1.replace(S, 'S')
-            newln = newln.replace(P, 'P')
-            M1 = M1.replace(P, 'P')
-            newln = newln.replace(M1, 'M1')
-            if newln in unsat_formats:
-                test_with_correct_ans.append(ln + '*' + 'UNSAT')
-            else:
-                test_with_correct_ans.append(ln + '*' + 'SAT')
-    with open(outFile, 'w+') as ofh:
-        ofh.write('\n'.join(test_with_correct_ans))
-    num = len(test_with_correct_ans)
-    print(num)
-    return num
-
-
-def CREAte_babi_tagged_words(all_tasks):
-    """
-    :param task_list:
-    :param create:
-    :return:
-    """
-    appeared_words = []
-    all_words = defaultdict(list)
-    nlp = spacy.load("en_core_web_sm")
-    for task in [tasks for one_type_tasks in all_tasks for tasks in one_type_tasks]:
-        struct = {}
-        for ln in task:
-            words = [w for w in ln.split() if w not in appeared_words]
-            if len(words) == 0:
-                continue
-
-            appeared_words += words
-            q_a = None
-            if ln.startswith("DES: "):
-                ln = ln.strip("DES: ")  # "1 John went to the office"
-                num = int(ln.split()[0])   # num = 1
-                struct[num] = {}
-                snt = nlp(" ".join(ln.split()[1:])) # snt = "John went to the office"
-                struct[num][0] = "DES"
-                i = 1
-                for token in snt:
-                    wd = {"word": token.text,
-                          "pos": token.pos_,
-                          "tag": token.tag_
-                          }
-                    struct[num][i] = wd
-                    i += 1
-                    all_words[token.pos_+token.tag_].append(token.text)
-
-            elif ln.startswith("QUES: "):
-                ln = ln.strip("QUES: ")
-                num = int(ln.split()[0])
-                struct[num] = {}
-                q_a = " ".join(ln.split()[1:]).split("ANS: ")
-                snt = nlp(q_a[0])
-                struct[num][0] = "QUES"
-                i = 1
-                for token in snt:
-                    wd = {"word": token.text,
-                          "pos": token.pos_,
-                          "tag": token.tag_
-                          }
-                    struct[num][i] = wd
-                    i += 1
-                struct[num][i] = q_a[1]
-                all_words[token.pos_ + token.tag_].append(token.text)
-
-    for k in all_words.keys():
-        all_words[k] = list(set(all_words[k]))
-        with open('data/bAbI/tagged_words.txt', 'a+') as fh:
-            fh.write("\n".join([k]+all_words[k]))
 
 def get_uniform_locations_on_sphere(dim=2, centra = 0, r=1, num = 10):
     rlt, count = [], 0
@@ -134,37 +29,6 @@ def get_uniform_locations_on_sphere(dim=2, centra = 0, r=1, num = 10):
             rlt.append(u)
         count +=1
     return rlt
-
-def all_words_in_files(data_dir="data/Syllogism/", ofile="words.txt"):
-    filenames = [
-        "Modus_Barbara.txt",  # 1 : 500
-        "Modus_Barbari.txt",  # 2 : 500
-        "Modus_Celarent_Cesare.txt",  # 3,4 : 500
-        "Modus_Calemes_Camestres.txt",  # 5,6 : 500
-        "Modus_Darii_Datisi.txt",  # 7,8 : 518
-        "Modus_Darapti.txt",  # 9 : 500
-        "Modus_Disamis_Dimatis.txt",  # 10,11 : 500
-        "Modus_Baroco.txt",  # 12 : 500
-        "Modus_Cesaro_Celaront.txt",  # 13,14 : 500
-        "Modus_Camestros_Calemos.txt",  # 15,16 : 500
-        "Modus_Bocardo.txt",  # 17 : 500
-        "Modus_Bamalip.txt",  # 18 : 500
-        "Modus_Ferio_Festino_Ferison_Fresison.txt",  # 19,20,21,22 : 500
-        "Modus_Felapton_Fesapo.txt",  # 23,24 : 500
-        ]
-    words = []
-    for nfile in filenames:
-        with open(data_dir+nfile, "r", encoding="utf-8") as f:
-            for ln in f:
-                "all relation.n.01 abstraction.n.06, all possession.n.02 relation.n.01:"
-                premises, _ = ln.split(":")
-                wlst = [ws.split(".")[0] for ws in premises.split() if '.' in ws]
-                wlst = list(set(wlst))
-                nlst = [word for word in wlst if word not in words]
-                words += nlst
-    words.sort()
-    with open(data_dir + ofile, "a+") as ofh:
-        ofh.write("\n".join(words)+"\n")
 
 
 def create_TB_0(ent_num, s_list):
@@ -194,22 +58,6 @@ def create_TB_0(ent_num, s_list):
                 raise NotImplementedError("??? " + rel)
     return tb, new_s_list
 
-
-def create_syllogism4pretrained_data(ifile="data/Syllogism/syllogism4pretrained_vec.txt",
-                                     ofile="data/Syllogism/syllogism4pretrained.txt"):
-    nlst = []
-    with open(ifile, 'r') as ifh:
-        for ln in ifh:
-            "all space.n.01 attribute.n.02, all attribute.n.02 entity.n.01: all space.n.01 entity.n.01;"
-            premises, conclusions = ln.split(":")
-            terms = conclusions.split(";")[0].strip().split()
-            s, p = terms[1], terms[2]
-            nlst.append("{}: all {} {}".format(premises, s, p))
-            nlst.append("{}: some-not {} {}".format(premises, s, p))
-            nlst.append("{}: no {} {}".format(premises, s, p))
-            nlst.append("{}: some {} {}".format(premises, s, p))
-    with open(ofile, 'a+') as ofh:
-        ofh.write("\n".join(nlst)+"\n")
 
 def distance(o1, o2):
     return np.linalg.norm(np.array(o1) - np.array(o2))
@@ -294,61 +142,6 @@ def get_uniform_locations_on_sphere(dim=2, centra = 0, r=1, startLoc=[], num = 1
             rlt.append(u2)
         if r == 0: break
     return rlt
-
-
-def embed_dict(data_file="data/glove.6B.50d.txt", norm=False):
-    W2Es = dict()
-    with open(data_file, "r", encoding="utf-8") as f:
-        for ln in f.readlines():
-            wlst = ln[:-1].split()
-            fv = [float(n.rstrip()) for n in wlst[1:]]
-            if norm:
-                l = float(np.linalg.norm(fv))
-                fv = [e/l for e in fv]
-            W2Es[wlst[0]] = fv
-    return len(wlst)-1, W2Es
-
-
-def get_all_word_stems(ifile="data/Syllogism/syllogism4pretrained.txt", ofile="data/words.txt"):
-    words = []
-    with open(ifile, "r", encoding="utf-8") as wf:
-        "some woman.n.01 reservist.n.01, all reservist.n.01 soldier.n.01: no woman.n.01 soldier.n.01"
-        for ln in wf:
-            wlst =[wstem.split('.')[0] for wstem in list(set([ele for ele in ln.split() if '.' in ele]))]
-            words += [wd for wd in wlst if wd not in words]
-    words = list(set(words))
-    with open(ofile, 'a+') as ofh:
-        ofh.write("\n".join(words)+"\n")
-
-
-def create_bert_vec(ifile="data/glove.6B.50d.txt", ofile="data/wstem_bert_embeddings.txt", word_file="data/words.txt"):
-    with open(word_file, "r", encoding="utf-8") as wf:
-        word_list = [ele[:-1] for ele in wf.readlines()]
-    client = BertClient()
-    fh = open(ofile, 'a+')
-    with open(ifile, "r", encoding="utf-8") as f:
-        for ln in f:
-            w = ln.split()[0]
-            if w not in word_list:
-                continue
-            lst = client.encode([[w]], is_tokenized=True)
-            vector = [str(e) for e in lst[0]]
-            nln = ' '.join([w]+vector+['\n'])
-            fh.write(nln)
-    fh.close()
-
-
-def filter_glove_list(ifile="data/glove.6B.50d.txt", ofile="data/wstem_glove.6B.50d.txt", word_file="data/words.txt"):
-    with open(word_file, "r", encoding="utf-8") as wf:
-        word_list = [ele[:-1] for ele in wf.readlines()]
-    fh = open(ofile, 'a+')
-    with open(ifile, "r", encoding="utf-8") as f:
-        for ln in f:
-            w = ln.split()[0]
-            if w not in word_list:
-                continue
-            fh.write(ln)
-    fh.close()
 
 
 def create_TB_0(ent_num, s_list):

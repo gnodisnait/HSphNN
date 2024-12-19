@@ -1,10 +1,11 @@
 import copy
 import json
+import os
 import openai
 import logging
 from torch.utils.tensorboard import SummaryWriter
 
-from load_data import *
+#from load_data import *
 from models_3 import *
 from eval_exp2 import *
 
@@ -285,8 +286,6 @@ class GPT_SphNN_dualMind:
             # answer = "cannot"
             answer = "yes. (circle M0, inside, circle P), (circle P, inside, circle S), (circle S, overlaps, circle M0)"
 
-        #print("first round answer:", answer)
-
         self.get_answer_of_task_by_model_construction(M=2)
         count = 0
 
@@ -315,7 +314,6 @@ class GPT_SphNN_dualMind:
                     if NOT_IN_TEST:
                         answer = self.get_completion(prompt)
                     else:
-                        # answer = "cannot"
                         answer = "yes. (circle M0, inside, circle P), (circle P, inside, circle S), (circle S, overlaps, circle M0)"
             elif check_result == "expl" and self.chatgpt_decision == self.sphnn_decision:
                 self.chatgpt_attempt["expl_type"] = "expl"
@@ -349,7 +347,6 @@ class GPT_SphNN_dualMind:
                     comment += 'ChatGPT decides as {}. SphNN decides the task as {} and denies ChatGPT\'s explanation after {} time of feedback.'.format(self.chatgpt_decision,
                                                                                                                                                         self.sphnn_decision, count)
 
-                #self.add_to_log(answer, key=comment)
                 self.log_json[count] = self.chatgpt_attempt
                 with open(self.fw, 'w', encoding='utf8') as f:
                     json.dump(self.log_json, f)
@@ -435,10 +432,9 @@ class GPT_SphNN_dualMind:
         :return:
         '''
         d = ValidSyllogism(data_dir=data_dir, file_name = fname, use_random_symbol=randSym)
-        ##done_lst = get_failed_cases(fdir="../data/hsphnn_runs/ChatGPT_SphNN/")
 
         for i in range(len(d.raw_data_list)):
-            #if i >3: continue
+            ##
             prompt = self.inital_prompt(d.raw_data_list[i])
             self.make_ent_dic(d.id2ent_dict_list[i])
             self.task = {
@@ -448,7 +444,6 @@ class GPT_SphNN_dualMind:
             self.log_json["task"] = self.task
             self.log_json["id"] = "log_data_{}.json".format(self.task["num"])
             self.fw = self.model_checker.save_dir + "log_data_{}.json".format(self.task["num"])
-            #self.add_to_log(d.raw_data_list[i], key='the original task:')
             self.initialise_data(d.id2ent_dict_list[i])
             self.prompt_deduction_with_model_checker(prompt, max_num=max_num, Mepoch = M, randSym = randSym)
 
@@ -458,18 +453,22 @@ if __name__ == '__main__':
         API_KEY = api_key.read().strip()
         with open('params.json', 'r') as ijh:
             params = json.load(ijh)
-            for tblock in params["exp2"]["all_4o10F"]:
-                data_dir = tblock["data_dir"]
-                output_dir = tblock["output_dir"]
-                Mepoch = tblock["M"]
-                FileName = tblock["test_file"]
-                vChatGPT = tblock["chatgpt"]
-                randomSym = tblock["use_random"]
-                result = tblock["result_file"]
-                maxNum = tblock["max_num"]
+            for tp in ['all_3tb', 'all_4o', 'all_4o10F']:
+                for tblock in params["exp2"][tp]:
+                    data_dir = tblock["data_dir"]
+                    output_dir = tblock["output_dir"]
+                    if not os.path.exists(output_dir):
+                        os.makedirs(output_dir)
+                    Mepoch = tblock["M"]
+                    FileName = tblock["test_file"]
+                    vChatGPT = tblock["chatgpt"]
+                    randomSym = tblock["use_random"]
+                    result = tblock["result_file"]
+                    maxNum = tblock["max_num"]
 
-                adualmind = GPT_SphNN_dualMind(API_KEY, vChatGPT, 'deductor')
-                adualmind.model_checker.save_dir = output_dir
-                adualmind.deduction_with_model_checker(data_dir = data_dir, fname = FileName,
-                                                       max_num = maxNum, M = Mepoch, randSym = randomSym)
+                    adualmind = GPT_SphNN_dualMind(API_KEY, vChatGPT, 'deductor')
+                    adualmind.model_checker.save_dir = output_dir
+                    adualmind.deduction_with_model_checker(data_dir = data_dir, fname = FileName,
+                                                           max_num = maxNum, M = Mepoch, randSym = randomSym)
+
 

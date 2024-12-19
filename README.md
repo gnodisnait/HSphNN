@@ -1,16 +1,16 @@
 # Neural Reasoning for Sure through Constructing Explainable Models
 
------
+---
 Data, Code, and the supplementary document for the paper, *Neural Reasoning for Sure through Constructing Explainable Models*. ***AAAI-25***.
 
------
+---
 
 ## The supplementary document is ```AAAI-25_sup.pdf```; 
 
 
 # Installation
 
-------
+---
 ```
 $ git clone https://github.com/gnodisnait/HSphNN.git
 $ cd HSphNN
