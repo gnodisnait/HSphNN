@@ -5,12 +5,15 @@ Data, Code, and the supplementary document for the paper, *Neural Reasoning for 
 
 ---
 
-## The supplementary document is ```AAAI-25_sup.pdf```; 
+## The supplementary document: 
 
+```supplementary_document.pdf```
+
+---
 
 # Installation
 
----
+
 ```
 $ git clone https://github.com/gnodisnait/HSphNN.git
 $ cd HSphNN
