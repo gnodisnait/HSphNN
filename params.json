@@ -1,0 +1,108 @@
+{
+  "data_dir": "./data/",
+  "output_dir":"../data/hsphnn_runs/",
+  "glove_embedding": "../data/embeddings/word_glove.6B.50d.txt",
+  "bert_embedding": "../data/embeddings/word_bert_embedding.txt",
+  "gpt35_embedding": "../data/embeddings/ggpt35_embeddings.txt",
+  "exp1": {
+    "target": "examine whether SphNN is able to identify all 24 valid syllogismtic reasoning.",
+    "data_dir": "../data/ValidSyllogism/",
+    "output_dir": "DIM{}R1InitLoc{}",
+    "DIMs": [2, 3, 15, 30, 100, 200, 1000, 2000, 3000],
+    "InitLoc": [0],
+    "machine_para": {"lr": 0.0001, "wd": 0, "save": true, "OPT": 0, "fw": 0, "timer": 300,
+      "diagram": false,"ent_num": 3, "input_statement": [], "raw_data": [], "entdic": null, "pre_train": 0,
+      "eps": 1e-2, "epoch": 1, "cop": 0, "fix_center": 0, "p": 2, "cuda":true,
+      "DIMs": [2, 3, 15, 30, 100, 200, 1000, 2000, 3000, 10000],
+      "InitLoc": [0], "init_r": 1,  "pre_train_dic": null,"start":0, "num": 999999999,
+      "ref_R": 1}
+  },
+  "exp2": {
+    "target": "using Hyperbolic SphNN for prompt engineering.",
+    "data_dir": "./data/ValidSyllogism/",
+    "output_dir": "../data/hsphnn_runs/ChatGPT3tb_short2_SphNN_words/",
+    "log": "log",
+    "test_file": "meaningful_syllogism_3.txt",
+    "chatgpt": "gpt-3.5-turbo",
+    "cuda": true, "lr": 0.0001, "w_decay": 0, "save": false, "OPT": 0, "fw": 0, "timer": 300,
+    "diagram": false,"ent_num": 3, "input_statement": [], "seed": 2020,
+    "raw_data": [], "entdic": null, "pre_train": 0, "dim": 2, "eps": 1e-2, "epoch": 1, "cop": 0,
+    "rand_rotate_num": 360, "center_fixed": 0, "p": 2, "init_loc": 0, "init_r": 1, "M": 2,
+    "pre_train_dic": null,
+    "all_3tb": [
+       {
+        "data_dir": "./data/ValidSyllogism/",
+        "output_dir": "../data/hsphnn_runs/ChatGPT3tb_short2_SphNN_words/",
+        "test_file": "meaningful_syllogism_3.txt",
+        "use_random": false,
+        "chatgpt": "gpt-3.5-turbo",
+        "M": 2,
+        "max_num": 2
+      },
+       {
+        "data_dir": "./data/ValidSyllogism/",
+        "output_dir": "../data/hsphnn_runs/ChatGPT3tb_short2_SphNN_symbol/",
+        "test_file": "Possible_Syllogism_3.txt",
+        "use_random": true,
+        "result_file": "chatgpt3tb_short2P_symbol_sphnn.txt",
+        "chatgpt": "gpt-3.5-turbo",
+        "M": 2,
+        "max_num": 2
+      },
+       {
+        "data_dir": "./data/ValidSyllogism/",
+        "output_dir": "../data/hsphnn_runs/ChatGPT3tb_short2_SphNN_random/",
+        "test_file": "Possible_Syllogism_3.txt",
+        "use_random": true,
+        "chatgpt": "gpt-3.5-turbo",
+        "M": 2,
+        "max_num": 2
+      }
+    ],
+    "all_4o": [
+      {
+        "data_dir": "./data/ValidSyllogism/",
+        "output_dir": "../data/hsphnn_runs/ChatGPT4o_short2_SphNN_words/",
+        "test_file": "meaningful_syllogism_3.txt",
+        "use_random": false,
+        "chatgpt": "gpt-4o",
+        "M": 2,
+        "max_num": 2
+      },
+      {
+        "data_dir": "./data/ValidSyllogism/",
+        "output_dir": "../data/hsphnn_runs/ChatGPT4o_short2_SphNN_symbol/",
+        "test_file": "Possible_Syllogism_3.txt",
+        "use_random": false,
+        "chatgpt": "gpt-4o",
+        "M": 2,
+        "max_num": 2
+      },
+       {
+        "data_dir": "./data/ValidSyllogism/",
+        "output_dir": "../data/hsphnn_runs/ChatGPT4o_short2_SphNN_random/",
+        "test_file": "meaningful_syllogism_3.txt",
+        "use_random": true,
+        "chatgpt": "gpt-4o",
+        "M": 2,
+        "max_num": 2
+      }
+    ],
+    "all_4o10F": [
+       {
+        "data_dir": "./data/ValidSyllogism/",
+        "output_dir": "../data/hsphnn_runs/ChatGPT4o_short2_SphNN_random10F/",
+        "test_file": "Possible_Syllogism_3.txt",
+        "use_random": true,
+        "chatgpt": "gpt-4o",
+        "M": 2,
+        "max_num": 10
+      }
+    ],
+    "rest": [
+
+
+
+    ]
+  }
+}

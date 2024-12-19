@@ -1,7 +1,22 @@
 # Neural Reasoning for Sure through Constructing Explainable Models
 
-## The supplementary document is ```sup_doc.pdf```;
-## Paremeters are set in ```params.json```;
+-----
+Data, Code, and the supplementary document for the paper, *Neural Reasoning for Sure through Constructing Explainable Models*. ***AAAI-25***.
+
+-----
+
+## The supplementary document is ```AAAI-25_sup.pdf```; 
+
+
+# Installation
+
+------
+```
+$ git clone https://github.com/gnodisnait/HSphNN.git
+$ cd HSphNN
+```
+
+Paremeters are set in ```params.json```;
 
 # Step 1. Download sample output dataset ```hsphnn_runs.zip``` 
 
@@ -19,7 +34,10 @@ After that, move the ```hsphnn_runs``` directory under the directory ```data``` 
  |-/data/hsphnn_runs/
  |-/HSphNN/  
 ```
-# Step 3. to see the results of the first experiment (HSphNN achieves the symbolic-level of syllogistic reasoning with 1 epoch), type
+----
+# Step 3. to see the results of the first experiment 
+
+HSphNN achieves the symbolic-level of syllogistic reasoning with 1 epoch
 
 ```
 $  python eval_exp1.py
@@ -40,7 +58,9 @@ The results are saved in the following files.
             |--ValidSyllogism_DIM3000R1InitLoc0     
 ```
 ```DIM3000``` means that spheres have the 3000 dimensions.
+
 ```R1``` means that spheres are initialised with their centres being located at the surface of a sphere with the radius of ```1```.
+
 ```InitLoc0``` means that spheres are initialised as being co-incided.
 
 ## Experiment result  
@@ -82,9 +102,11 @@ Experiments show that it took HSphNN more time to determine a valid syllogistic 
 
 ![alt text](pic/time4all.png)
 
+----
+
 # Step 4. to see the results of the second experiment (HSphNN gave feedback to ChatGPT)
 
-### create a ```config``` directory in the ```HSphNN``` directory, and create the ```openai_key.txt``` file to save your API key of [openai](https://platform.openai.com/docs/quickstart). 
+create a ```config``` directory in the ```HSphNN``` directory, and create the ```openai_key.txt``` file to save your API key of [openai](https://platform.openai.com/docs/quickstart). 
 
 ```
 --
@@ -94,10 +116,13 @@ Experiments show that it took HSphNN more time to determine a valid syllogistic 
             |--openai_key.txt 
 ```
 
-### then, type
+then, type
 ```
 $  python eval_exp2.py
 ```
+
+----
+
 ## Experiment results
 ```
 ****************************************************************************************************
@@ -188,11 +213,8 @@ Number of correct decision and correct explanation vs. the number of feedbacks
 | #Tasks with correct decision and explanation | 106 | 20 | 12 |
 +----------------------------------------------+-----+----+----+
 ```
+----
 
-```
-****************************************************************************************************
-using GPT-4o, maximum 2 time feedback
-```
 The following tables were the performances of ChatGPT-4o. 
 
 ```
@@ -255,11 +277,8 @@ Number of correct decision and correct explanation vs. the number of feedbacks
 +----------------------------------------------+-----+---+---+
 ****************************************************************************************************
 ```
+----
 
-```
-using GPT-4o, maximum 10 time feedback
-../data/hsphnn_runs/ChatGPT4o_short2_SphNN_random10F/
-```
 We increase the maximum number of feedback to 10 round and found that ChatGPT was not sensitive to the repetition. 
 ```
 no feedback
@@ -282,3 +301,171 @@ Number of correct decision and correct explanation vs. the number of feedbacks
 +----------------------------------------------+-----+---+---+---+---+---+---+---+---+---+----+
 ```
 
+------
+
+## A case of ```Correct+Expl``` (correct decision with correct explanation).
+
+### Decide the satisfiability of the three statements (log_data_33.json): 
+```
+all S are M0. no M0 are P. some S are not P.
+```
+***(i) HSphNN decides it satisiable.*** 
+
+***(ii) ChatGPT (gpt-3.5-turbo) decides it satisiable and gives an explanation:***  
+```
+(circle S, inside, circle M0)
+(circle M0, outside, circle P)
+(circle S, outside, circle P)
+```
+Here, it is correct that ```all S are M0``` can be explained as ```(circle S, inside, circle M0)``` and 
+```no M0 are P``` can be explained as ```(circle M0, outside, circle P)``` and ```some S are not P``` can be explained as ```(circle S, outside, circle P)```.
+
+***(iii) HSphNN tries to construct a model for ChatGPT's explanation and finds the explanation is satisfiable.***
+
+***(iv) Therefore, ChatGPT (gpt-3.5-turbo) gives a correct decision and correct explanations.***
+
+
+## A case of ```HALLU 0``` (correct decisioin with a partial explanation )
+
+LLM may make a correct decisioin and gives a partial explanation that cannot lead to any conclusion.
+
+### Decide the satisfiability of the three statements (log_data_64.json): 
+```
+some S are not M0. all M0 are P. all S are P.
+```
+***(i) HSphNN decides it satisiable.*** 
+
+***(ii) ChatGPT (gpt-3.5-turbo) decides it satisiable and gives a partial explanation:***  
+```
+(circle S, inside, circle P)
+(circle P, inside, circle M0)
+(circle M0, inside, circle P)
+```
+In ChatGPT's explanation, the relation between ```S``` and ```M0``` is missing.
+
+***(iii) Therefore, ChatGPT (gpt-3.5-turbo) hallucinated a correct decision based on a partial explanation.***
+
+Note: the relation ```(circle P, inside, circle M0)```and ```(circle M0, inside, circle P)``` is not contradictory. The two relations will follow that ```M0``` and ```P``` are coincided.
+
+## A case of ```HALLU 1``` (correct decisioin with an incorrect explanation)
+
+LLM may make a correct decisioin and gives an incorrect explanation for at least one single statement.
+
+### Decide the satisfiability of the three statements (log_data_168.json): 
+```
+no M0 are S. no M0 are P. all S are P.
+```
+***(i) HSphNN decides it satisiable.*** 
+
+***(ii) ChatGPT (gpt-3.5-turbo) decides it satisiable and gives an explanation:***  
+```
+(circle P, inside, circle M0)
+(circle M0, outside, circle S)
+(circle S, inside, circle P)
+```
+Here, ChatGPT mistakenly interpreted ```no M0 are P``` as ```(circle P, inside, circle M0)```.
+
+***(iii) Therefore, ChatGPT (gpt-3.5-turbo) hallucinated a correct decision based on an incorrect explanation.***
+
+
+## An example of Class correct decisioin and gives correct but irrelavent explanation (```HALLU 2```)
+
+LLM may make a correct decisioin and gives correct explanation for each single statement, but the whole explanation is incorrect.
+
+### Decide the satisfiability of the three statements: 
+```
+some M0 are not S. all M0 are P. some S are not P.
+```
+***(i) HSphNN decides it satisiable.*** 
+
+***(ii) ChatGPT (gpt-3.5-turbo) decides it satisiable and gives an explanation:***  
+```
+(circle M0, overlaps, circle S)
+(circle M0, inside, circle P)
+(circle S, outside, circle P)
+```
+Here, it is correct that ```some M0 are not S``` can be explained as ```(circle M0, overlaps, circle S)``` and 
+```all M0 are P``` can be explained as ```(circle M0, inside, circle P)``` and ```some S are not P``` can be explained as ```(circle S, outside, circle P)```.
+
+***(iii) HSphNN tries to construct a model for ChatGPT's explanation and finds the explanation is unsatisfiable.***
+
+***(iv) Therefore, ChatGPT (gpt-3.5-turbo) gives a correct decision and correct explanation for each statement, but with an incorrect explanation.***
+
+
+## A case of ```Inorrect+Expl``` (incorrect decision with a correct explanation)
+
+### Decide the satisfiability of the three statements: 
+```
+all S are M0. no M0 are P. all S are P.
+```
+***(i) HSphNN decides it unsatisiable.*** 
+
+***(ii) ChatGPT (gpt-3.5-turbo) decides it satisiable and gives an explanation:***  
+```
+(circle S, inside, circle M0) 
+(circle M0, outside, circle P)
+(circle S, inside, circle P)
+```
+The explanation is correct for each single statement and for the whole.
+
+***(iii) Therefore, ChatGPT (gpt-3.5-turbo) gives an incorrect decision with a correct explanation.***
+
+
+## A case of ```Rest``` (incorrect decision with incorrect explanation)
+### Decide the satisfiability of the three statements (log_data_24.json): 
+```
+all M0 are S. some M0 are not P. all S are P.
+```
+***(i) HSphNN decides it unsatisiable.*** 
+
+***(ii) ChatGPT (gpt-3.5-turbo) decides it satisiable and gives an explanation:***  
+```
+(circle M0, inside, circle S) 
+(circle S, overlaps, circle P)
+(circle M0, inside, circle P)
+```
+Here, it is not correct that ```all S are P``` can be explained as ```(circle S, overlaps, circle P)```.
+
+***(iii) Therefore, ChatGPT (gpt-3.5-turbo) gives an incorrect decision with an incorrect explanation.***
+
+
+------
+
+# Step 5. to run the source code.
+
+## create the ```hsphnn``` virtual environment by typing following commands (tested at MacOS M1)
+
+```
+$ conda create --name hsphnn python=3.9
+$ conda activate hsphnn
+$ conda install pytorch::pytorch torchvision torchaudio -c pytorch
+$ conda install conda-forge::openai==0.28
+$ conda install conda-forge::matplotlib
+$ conda install conda-forge::tensorboard
+$ conda install conda-forge::prettytable
+```
+
+------
+
+## run the first experiment
+```
+$ ./experiment1.sh
+```
+ 
+## run the second experiment
+```
+$ ./experiment2.sh
+```
+
+------
+
+## Reference
+
+```
+@inproceedings{djl2025,
+  author    = {Tiansi Dong and Mateja Jamnik and Pietro Liò},
+  title     = {Neural Reasoning for Sure through Constructing Explainable Models},
+  booktitle = {AAAI},  
+  year = {2025},  
+}
+``` 
