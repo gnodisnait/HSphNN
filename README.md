@@ -1,7 +1,7 @@
 # Neural Reasoning for Sure through Constructing Explainable Models
 
 ---
-Data, Code, and the supplementary document for the paper, *Neural Reasoning for Sure through Constructing Explainable Models*. ***AAAI-25***.
+Data, Code, and the supplementary document for the paper, *Neural Reasoning for Sure through Constructing Explainable Models*. AAAI-25.
 
 ---
 
