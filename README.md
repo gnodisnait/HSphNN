@@ -3,6 +3,7 @@
 ---
 Data, Code, and the supplementary document for the paper, *Neural Reasoning for Sure through Constructing Explainable Models*. AAAI-25.
 
+![](pic/intro_diagram.png)
 ---
 
 ## The supplementary document: 
@@ -459,6 +460,13 @@ $ ./experiment1.sh
 ```
 $ ./experiment2.sh
 ```
+
+------
+
+## License
+
+This repository can be used for non-commercial purposes only. 
+Contact one of the three authors of the paper below, if you are interested in a commercial license.
 
 ------
 
