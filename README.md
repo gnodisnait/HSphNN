@@ -86,15 +86,15 @@ When spheres are initialised being coincided, HSphNN successfully identified all
 +---------------------+-------+-----------------------------+--------------+
 ```
 
-Experiments show that it took HSphNN more time to determine a valid syllogistic reasoning than to determine an invalid one.
+Experiments show that it took HSphNN more time to determine valid syllogistic reasoning than to determine an invalid one.
 
 ```
 +-------------------+---------------------+----------------------------+---------+--------+----------+
 | type of syllogism | number of syllogism | max time cost (in seconds) |  min -  | mean - | median - |
 +-------------------+---------------------+----------------------------+---------+--------+----------+
-|  valid syllogism  |         240         |           67.55            |   2.81  | 17.71  |  12.09   |
-| invalid syllogism |         2320        |           66.29            | 0.00069 |  3.46  |   2.41   |
-|   all syllogism   |         2560        |           67.55            | 0.00069 |  4.80  |   2.52   |
+|  valid syllogism  |         216         |           67.55            |   2.81  | 17.71  |  12.09   |
+| invalid syllogism |         2088        |           66.29            | 0.00069 |  3.46  |   2.41   |
+|   all syllogism   |         2304        |           67.55            | 0.00069 |  4.80  |   2.52   |
 +-------------------+---------------------+----------------------------+---------+--------+----------+
 ```
 
