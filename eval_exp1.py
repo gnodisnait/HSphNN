@@ -115,18 +115,18 @@ if __name__ == '__main__':
             x30 = len([s for s in t4valid if s < 30]) / len(t4valid)
             x60 = len([s for s in t4valid if s < 60]) / len(t4valid)
             x120 = len([s for s in t4valid if s < 120])/len( t4valid)
-            t.add_row(['valid syllogism', 240, "{:0.2f}".format(float(nl.max())), "{:0.2f}".format(float(nl.min())), "{:0.2f}".format(float(nl.mean())), "{:0.2f}".format(float(np.median(nl)))]) #, '{:0.2}'.format(x)])
+            t.add_row(['valid syllogism', 216, "{:0.2f}".format(float(nl.max())), "{:0.2f}".format(float(nl.min())), "{:0.2f}".format(float(nl.mean())), "{:0.2f}".format(float(np.median(nl)))]) #, '{:0.2}'.format(x)])
             print('time for invalid')
             nl = np.array(t4invalid)
             x = len([s for s in t4invalid if s < 20]) / len( t4invalid)
             print('time: max=', nl.max(), 'min=', nl.min(), 'mean=', nl.mean(),'median=', np.median(nl), "<5s", len([s for s in t4invalid if s <5]))
-            t.add_row(['invalid syllogism', 2320, "{:0.2f}".format(float(nl.max())), "{:0.5f}".format(float(nl.min())),
+            t.add_row(['invalid syllogism', 2088, "{:0.2f}".format(float(nl.max())), "{:0.5f}".format(float(nl.min())),
                        "{:0.2f}".format(float(nl.mean())), "{:0.2f}".format(float(np.median(nl)))]) #, '{:0.2}'.format(x)])
 
             print('time for all')
             nl = np.array(t4all)
             x = len([s for s in t4all if s < 20]) /len( t4all)
-            t.add_row(['all syllogism', 2560, "{:0.2f}".format(float(nl.max())), "{:0.5f}".format(float(nl.min())),
+            t.add_row(['all syllogism', 2304, "{:0.2f}".format(float(nl.max())), "{:0.5f}".format(float(nl.min())),
                        "{:0.2f}".format(float(nl.mean())), "{:0.2f}".format(float(np.median(nl)))]) #, '{:0.2}'.format(x)])
 
             print('time: max=', nl.max(),  'min=', nl.min(),'mean=', nl.mean(),'median=', np.median(nl), "<5s",
